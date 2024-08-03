@@ -71,18 +71,57 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    if (!name || !email || !password) {
-      res.status(401).send({
+    // Check for null fields
+    if (!email || !password) {
+      return res.status(401).send({
         success: false,
         message: "Fields can't be Null",
       });
     }
 
-    // Find in DB
+    // Find the user in the database
+    const getUser = await User.findOne({ email });
+    if (!getUser) {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Compare the current and stored password
+    const comparePass = await bcrypt.compare(password, getUser.password);
+
+    if (!comparePass) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign(
+      {
+        userId: getUser._id,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully logged in :)",
+      token: token,
+    });
   } catch (error) {
-    console.log("Something went wrong in login controller");
+    console.error("Something went wrong in login controller:", error.message);
+    return res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
 };
