@@ -1,4 +1,10 @@
 const User = require("../model/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+// JWT secret key
+const JWT_SECRET = process.env.JWT;
 
 exports.signup = async (req, res) => {
   const { name, password, email } = req.body;
@@ -20,17 +26,44 @@ exports.signup = async (req, res) => {
       });
     }
 
+    // Addition process begin
+
+    /* 
+    - Hash Pass
+    - Create new user with hash pass
+    - Generate JWT token
+    */
+
+    // Hash
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    // Create new user with hash pass
+
     const newUser = await User.create({
       name: name,
       email: email,
-      password: password,
+      password: hashPassword,
     });
 
     console.log(newUser);
 
+    // Generate a JWT token
+
+    const token = jwt.sign(
+      {
+        userId: newUser._id,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
     return res.status(200).json({
       success: true,
       message: "User Created",
+      token: token,
     });
   } catch (error) {
     console.log("Something went wrong in signup controller");
