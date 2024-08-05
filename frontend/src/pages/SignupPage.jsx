@@ -1,12 +1,32 @@
 import React from "react";
 import AuthForm from "../components/AuthForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-  const handleSubmit = (e, formData) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    // handle signup logic with formData
-    console.log("Signup data:", formData);
+
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        navigate("/");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
   };
 
   return (
@@ -20,7 +40,7 @@ const SignupPage = () => {
           <p className="text-gray-600">
             Already have an account?{" "}
             <Link
-              to="/login"
+              to="/"
               className="text-blue-500 hover:text-blue-700 font-medium"
             >
               Click here to log in

@@ -2,6 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/"; // Redirect to login page
+  };
+
   return (
     <nav className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
@@ -9,8 +14,6 @@ const Navbar = () => {
           to="/dashboard"
           className="text-white text-3xl font-bold ml-4 font-['Roboto']"
         >
-          {" "}
-          {/* Made Medicare clickable */}
           Medicare
         </Link>
         <div className="flex items-center space-x-6 ml-auto">
@@ -32,12 +35,12 @@ const Navbar = () => {
           >
             Contact
           </Link>
-          <Link
-            to="/hire"
+          <button
+            onClick={handleLogout}
             className="bg-white text-blue-600 font-semibold py-2 px-4 rounded-full shadow hover:bg-gray-200 font-['Roboto']"
           >
-            Hire Me
-          </Link>
+            Logout
+          </button>
         </div>
       </div>
     </nav>
