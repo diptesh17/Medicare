@@ -1,6 +1,8 @@
 import React from "react";
 import AuthForm from "../components/AuthForm";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -20,13 +22,15 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem("token", data.token); // Store token in localStorage
+        localStorage.setItem("token", data.token);
+        toast.success("Login successful!");
         navigate("/dashboard");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Login error:", error);
+      toast.error("An error occurred during login.");
     }
   };
 

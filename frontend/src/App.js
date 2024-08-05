@@ -11,6 +11,8 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PrivateRoute = ({ element: Component }) => {
   const token = localStorage.getItem("token");
@@ -20,6 +22,7 @@ const PrivateRoute = ({ element: Component }) => {
 const App = () => {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/" element={<LoginPage />} />

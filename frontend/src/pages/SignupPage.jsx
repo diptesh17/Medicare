@@ -1,6 +1,7 @@
 import React from "react";
 import AuthForm from "../components/AuthForm";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -20,12 +21,14 @@ const SignupPage = () => {
       const data = await response.json();
 
       if (data.success) {
+        toast.success("Signup successful! Please log in.");
         navigate("/");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Signup error:", error);
+      toast.error("An error occurred during signup.");
     }
   };
 
