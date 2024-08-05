@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/system";
 import { Person, Email, Message } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 const Contact = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/contact") {
+      // Load Tawk.to script
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.async = true;
+      script.src = "https://embed.tawk.to/66b0b2391601a2195ba0ec02/1i4h3gcn0"; // Your Tawk.to script
+      script.charset = "UTF-8";
+      script.setAttribute("crossorigin", "*");
+      document.body.appendChild(script);
+
+      // Cleanup function to remove the script when the component unmounts
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [location.pathname]); // Run effect when the pathname changes
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
