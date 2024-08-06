@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/system";
 import { Person, Email, Message } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   const location = useLocation();
@@ -30,12 +31,31 @@ const Contact = () => {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="flex-grow flex justify-center items-center p-4 bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-3xl mb-6 text-center font-semibold">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex-grow flex justify-center items-center p-4 bg-gray-100"
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+        >
+          <motion.h2
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-3xl mb-6 text-center font-semibold"
+          >
             Contact Us
-          </h2>
-          <form>
+          </motion.h2>
+          <motion.form
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
             <Box className="mb-4">
               <TextField
                 label="Name"
@@ -77,9 +97,9 @@ const Contact = () => {
             >
               Send Message
             </Button>
-          </form>
-        </div>
-      </div>
+          </motion.form>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

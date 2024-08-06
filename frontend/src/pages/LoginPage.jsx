@@ -3,6 +3,7 @@ import AuthForm from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -35,13 +36,28 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="bg-white p-8 rounded shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-semibold mb-6 text-center text-blue-700">
+    <div className="flex justify-center items-center h-screen bg-black">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white p-8 rounded shadow-lg w-full max-w-md"
+      >
+        <motion.h2
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-3xl font-semibold mb-6 text-center text-blue-700"
+        >
           Log In
-        </h2>
+        </motion.h2>
         <AuthForm type="login" handleSubmit={handleSubmit} />
-        <div className="mt-4 text-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          className="mt-4 text-center"
+        >
           <p className="text-gray-600">
             Don't have an account?{" "}
             <Link
@@ -51,8 +67,8 @@ const LoginPage = () => {
               Click here to sign up
             </Link>
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
