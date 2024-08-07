@@ -126,66 +126,54 @@ exports.login = async (req, res) => {
   }
 };
 
-const symptomsData = {
-  symptoms: [
-    {
-      id: 1,
-      name: "Headache",
-      medicines: ["Aspirin", "Ibuprofen", "Paracetamol"],
-    },
-    {
-      id: 2,
-      name: "Fever",
-      medicines: ["Paracetamol", "Ibuprofen", "Acetaminophen"],
-    },
-    {
-      id: 3,
-      name: "Cough",
-      medicines: ["Dextromethorphan", "Guaifenesin", "Codeine"],
-    },
-  ],
-};
+const medicinesData = [
+  {
+    symptom: "Fever",
+    medicines: ["Paracetamol", "Ibuprofen"],
+  },
+  {
+    symptom: "Cough",
+    medicines: ["Dextromethorphan", "Guaifenesin"],
+  },
+  // Add more symptom-medicine pairs as needed
+];
 
 exports.medicines = async (req, res) => {
+  const { symptoms } = req.body;
+
+  if (!symptoms || !Array.isArray(symptoms)) {
+    return res.status(400).json({
+      success: false,
+      message: "No symptoms provided or symptoms is not an array",
+    });
+  }
+
   try {
-    const { symptoms } = req.body; // Extract symptoms from request body
-
-    // Ensure symptoms is an array
-    if (!Array.isArray(symptoms) || symptoms.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "No symptoms provided or symptoms is not an array",
-      });
-    }
-
-    // Find medicines for each symptom
-    const medicines = symptoms.reduce((acc, symptom) => {
-      const symptomData = symptomsData.symptoms.find(
-        (s) => s.name.toLowerCase() === symptom.toLowerCase()
+    const matchedMedicines = symptoms.reduce((acc, symptom) => {
+      const found = medicinesData.find(
+        (item) => item.symptom.toLowerCase() === symptom.toLowerCase()
       );
-      if (symptomData) {
-        acc.push(...symptomData.medicines);
+      if (found) {
+        acc.push(...found.medicines);
       }
       return acc;
     }, []);
 
-    if (medicines.length === 0) {
+    if (matchedMedicines.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No medicines found for the provided symptoms",
       });
     }
 
-    // Remove duplicate medicines
-    const uniqueMedicines = [...new Set(medicines)];
-
-    // Send the response with the unique medicines
-    res.status(200).json({ success: true, medicines: uniqueMedicines });
+    return res.status(200).json({
+      success: true,
+      medicines: matchedMedicines,
+    });
   } catch (error) {
-    console.error("Error fetching medicines:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "An error occurred while fetching medicines",
+      message: "Error fetching medicines",
     });
   }
 };
