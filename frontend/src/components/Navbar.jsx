@@ -28,10 +28,10 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/about"
+            to="/help"
             className="text-white text-lg hover:text-gray-200 font-['Roboto'] font-medium"
           >
-            About
+            Help
           </Link>
           <Link
             to="/contact"

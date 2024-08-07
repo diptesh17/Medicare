@@ -9,7 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
-import About from "./pages/About";
+import Help from "./pages/Help";
 import Contact from "./pages/Contact";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,7 +31,7 @@ const App = () => {
           element={<PrivateRoute element={Dashboard} />}
         />
         <Route path="/home" element={<PrivateRoute element={Home} />} />
-        <Route path="/about" element={<PrivateRoute element={About} />} />
+        <Route path="/help" element={<PrivateRoute element={Help} />} />
         <Route path="/contact" element={<PrivateRoute element={Contact} />} />
       </Routes>
     </Router>
