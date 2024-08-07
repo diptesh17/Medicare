@@ -129,13 +129,100 @@ exports.login = async (req, res) => {
 const medicinesData = [
   {
     symptom: "Fever",
-    medicines: ["Paracetamol", "Ibuprofen"],
+    medicines: ["Paracetamol", "Ibuprofen", "Aspirin"],
   },
   {
     symptom: "Cough",
-    medicines: ["Dextromethorphan", "Guaifenesin"],
+    medicines: ["Dextromethorphan", "Guaifenesin", "Honey"],
   },
-  // Add more symptom-medicine pairs as needed
+  {
+    symptom: "Headache",
+    medicines: ["Ibuprofen", "Aspirin", "Acetaminophen"],
+  },
+  {
+    symptom: "Nausea",
+    medicines: ["Ondansetron", "Meclizine", "Promethazine"],
+  },
+  {
+    symptom: "Sore Throat",
+    medicines: ["Throat Lozenges", "Gargling Salt Water", "Ibuprofen"],
+  },
+  {
+    symptom: "Cold",
+    medicines: ["Antihistamines", "Decongestants", "Cough Syrup"],
+  },
+  {
+    symptom: "Stomach Pain",
+    medicines: ["Antacids", "Simethicone", "Loperamide"],
+  },
+  {
+    symptom: "Diarrhea",
+    medicines: ["Loperamide", "Bismuth Subsalicylate", "Probiotics"],
+  },
+  {
+    symptom: "Constipation",
+    medicines: ["Laxatives", "Fiber Supplements", "Miralax"],
+  },
+  {
+    symptom: "Allergies",
+    medicines: ["Antihistamines", "Nasal Sprays", "Eye Drops"],
+  },
+  {
+    symptom: "Muscle Pain",
+    medicines: ["Ibuprofen", "Acetaminophen", "Topical Analgesics"],
+  },
+  {
+    symptom: "Joint Pain",
+    medicines: ["Naproxen", "Glucosamine", "Chondroitin"],
+  },
+  {
+    symptom: "Skin Rash",
+    medicines: ["Hydrocortisone Cream", "Antihistamines", "Moisturizers"],
+  },
+  {
+    symptom: "Acne",
+    medicines: ["Benzoyl Peroxide", "Salicylic Acid", "Retinoids"],
+  },
+  {
+    symptom: "Asthma",
+    medicines: ["Albuterol Inhaler", "Corticosteroids", "Montelukast"],
+  },
+  {
+    symptom: "Heartburn",
+    medicines: ["Antacids", "H2 Blockers", "Proton Pump Inhibitors"],
+  },
+  {
+    symptom: "Fatigue",
+    medicines: ["Iron Supplements", "Vitamin B12", "Caffeine"],
+  },
+  {
+    symptom: "Anxiety",
+    medicines: ["SSRIs", "Benzodiazepines", "Natural Supplements"],
+  },
+  {
+    symptom: "Depression",
+    medicines: ["SSRIs", "SNRIs", "Therapy"],
+  },
+  {
+    symptom: "Insomnia",
+    medicines: ["Melatonin", "Diphenhydramine", "Zolpidem"],
+  },
+  {
+    symptom: "Weight Loss",
+    medicines: [
+      "Appetite Suppressants",
+      "Nutritional Supplements",
+      "Metformin",
+    ],
+  },
+  {
+    symptom: "Weight Gain",
+    medicines: ["Appetite Stimulants", "Nutritional Supplements", "Steroids"],
+  },
+  {
+    symptom: "Flu",
+    medicines: ["Oseltamivir", "Zinc Supplements", "Decongestants"],
+  },
 ];
 
 exports.medicines = async (req, res) => {

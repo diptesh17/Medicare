@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const Help = () => {
   const [symptom, setSymptom] = useState("");
@@ -38,16 +39,25 @@ const Help = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="flex flex-col h-screen bg-white">
+      {" "}
+      {/* Changed background to white */}
       <Navbar />
       <ToastContainer /> {/* Add ToastContainer for notifications */}
       <div className="flex-grow flex flex-col justify-center items-center p-8">
-        <h1 className="text-4xl font-bold text-white mb-8"> Virtual Doctor</h1>
+        <motion.h1
+          className="text-4xl font-bold text-blue-600 mb-8" // Changed text color
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Virtual Doctor
+        </motion.h1>
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center"
         >
-          <div className="mb-4">
+          <div className="mb-4 w-full">
             <label
               className="block text-gray-700 text-lg font-semibold mb-2"
               htmlFor="symptom"
@@ -62,12 +72,14 @@ const Help = () => {
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button
+          <motion.button
             type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition duration-200 mb-4"
+            whileHover={{ scale: 1.05 }} // Scale effect on hover
+            whileTap={{ scale: 0.95 }} // Scale effect on tap
           >
             Get Medicines
-          </button>
+          </motion.button>
         </form>
         {error && <p className="mt-4 text-red-600">{error}</p>}
         {medicines.length > 0 && (
