@@ -125,3 +125,67 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+const symptomsData = {
+  symptoms: [
+    {
+      id: 1,
+      name: "Headache",
+      medicines: ["Aspirin", "Ibuprofen", "Paracetamol"],
+    },
+    {
+      id: 2,
+      name: "Fever",
+      medicines: ["Paracetamol", "Ibuprofen", "Acetaminophen"],
+    },
+    {
+      id: 3,
+      name: "Cough",
+      medicines: ["Dextromethorphan", "Guaifenesin", "Codeine"],
+    },
+  ],
+};
+
+exports.medicines = async (req, res) => {
+  try {
+    const { symptoms } = req.body; // Extract symptoms from request body
+
+    // Ensure symptoms is an array
+    if (!Array.isArray(symptoms) || symptoms.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No symptoms provided or symptoms is not an array",
+      });
+    }
+
+    // Find medicines for each symptom
+    const medicines = symptoms.reduce((acc, symptom) => {
+      const symptomData = symptomsData.symptoms.find(
+        (s) => s.name.toLowerCase() === symptom.toLowerCase()
+      );
+      if (symptomData) {
+        acc.push(...symptomData.medicines);
+      }
+      return acc;
+    }, []);
+
+    if (medicines.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No medicines found for the provided symptoms",
+      });
+    }
+
+    // Remove duplicate medicines
+    const uniqueMedicines = [...new Set(medicines)];
+
+    // Send the response with the unique medicines
+    res.status(200).json({ success: true, medicines: uniqueMedicines });
+  } catch (error) {
+    console.error("Error fetching medicines:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching medicines",
+    });
+  }
+};
