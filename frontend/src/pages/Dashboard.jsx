@@ -56,6 +56,7 @@ const Dashboard = () => {
         >
           <img
             src={Brand}
+            alt="main_image"
             className="max-h-96 w-auto object-contain" // Set max height and maintain aspect ratio
           />
         </motion.div>

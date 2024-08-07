@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -6,9 +6,15 @@ import { Box } from "@mui/system";
 import { Person, Email, Message } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const location = useLocation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (location.pathname === "/contact") {
@@ -27,6 +33,34 @@ const Contact = () => {
       };
     }
   }, [location.pathname]); // Run effect when the pathname changes
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const data = await response.json();
+      setSuccess(data.message);
+      toast.success("Message Sent Successfully!");
+      setError("");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setError(err.message);
+      setSuccess("");
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -47,11 +81,12 @@ const Contact = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-3xl mb-6 text-center font-semibold"
+            className="text-3xl mb-6 text-center font-semibold text-blue-600" // Changed text color
           >
             Contact Us
           </motion.h2>
           <motion.form
+            onSubmit={handleSubmit}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
@@ -61,6 +96,8 @@ const Contact = () => {
                 label="Name"
                 variant="outlined"
                 fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 InputProps={{
                   startAdornment: <Person className="mr-2" />,
                 }}
@@ -71,6 +108,8 @@ const Contact = () => {
                 label="Email"
                 variant="outlined"
                 fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 InputProps={{
                   startAdornment: <Email className="mr-2" />,
                 }}
@@ -83,6 +122,8 @@ const Contact = () => {
                 multiline
                 rows={4}
                 fullWidth
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 InputProps={{
                   startAdornment: <Message className="mr-2" />,
                 }}
@@ -97,6 +138,8 @@ const Contact = () => {
             >
               Send Message
             </Button>
+            {success && <p className="mt-4 text-green-600">{success}</p>}
+            {error && <p className="mt-4 text-red-600">{error}</p>}
           </motion.form>
         </motion.div>
       </motion.div>

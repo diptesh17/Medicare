@@ -1,8 +1,12 @@
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const twilio = require("twilio");
 require("dotenv").config();
 
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;
+const client = twilio(accountSid, authToken);
 // JWT secret key
 const JWT_SECRET = process.env.JWT;
 
@@ -261,6 +265,31 @@ exports.medicines = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error fetching medicines",
+    });
+  }
+};
+
+exports.message = async (req, res) => {
+  const { name, email, message } = req.body;
+
+  const smsBody = `New Contact Form Submission:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
+
+  try {
+    const sentMessage = await client.messages.create({
+      body: smsBody,
+      from: "+12409790147",
+      to: "+919766162144",
+    });
+    console.log("Message sent: ", sentMessage.sid);
+    return res
+      .status(200)
+      .json({ success: true, message: "Message Sent Successfully!" });
+  } catch (error) {
+    console.error("Error sending SMS: ", error); // Log the entire error object
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send SMS",
+      error: error.message,
     });
   }
 };
